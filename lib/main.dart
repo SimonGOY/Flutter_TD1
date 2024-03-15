@@ -195,7 +195,7 @@ class FavoritesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var style = theme.textTheme.displayMedium!;
+    var style = theme.textTheme.displayMedium!.apply(color: Color(0xFF42A5F5));
     var styleb = theme.textTheme.displayLarge!;
     var favorites = context.watch<MyAppState>().favorites;
     var appState = context.watch<MyAppState>();
