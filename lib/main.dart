@@ -2,9 +2,18 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -147,32 +156,40 @@ class _MyHomePageState extends State<MyHomePage> {
       default:
         throw UnimplementedError('aucun composant pour $selectedIndex');
     }
-    return Scaffold(
-      body: Container(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        child: page,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoris',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        onTap: (value) {
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-      ),
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 500) {
+            return Scaffold(
+              body: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: page,
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Accueil',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite),
+                    label: 'Favoris',
+                  ),
+                ],
+                currentIndex: selectedIndex,
+                onTap: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                },
+              ),
+            );
+          } else {
+          return Text('Écran large');
+        }
+      }
     );
-  }
-}
+  }}
 
 class FavoritesPage extends StatelessWidget {
   @override
